@@ -12,11 +12,12 @@ export default React.createClass( {
 
 	propTypes: {
 		count: React.PropTypes.number.isRequired,
+		tooltip: React.PropTypes.string,
 	},
 
 	render() {
 		return (
-			<span className="count">{ this.numberFormat( this.props.count ) }</span>
+			<span className="count" title={ this.props.tooltip }>{ this.numberFormat( this.props.count ) }</span>
 		);
 	}
 } );
