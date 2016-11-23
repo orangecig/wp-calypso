@@ -57,11 +57,11 @@ class TaxonomyManagerListItem extends Component {
 		this.props.onDelete();
 	};
 
-	tooltip= () => {
+	tooltipText= () => {
 		const { postCount, name, translate } = this.props;
 		return translate(
-			'%(postCount)s %(name)s post',
-			'%(postCount)s %(name)s posts',
+			'%(postCount)s \'%(name)s\' post',
+			'%(postCount)s \'%(name)s\' posts',
 			{
 				count: postCount,
 				args: {
@@ -91,7 +91,7 @@ class TaxonomyManagerListItem extends Component {
 						</span>
 					}
 				</span>
-				{ ! isUndefined( postCount ) && <Count count={ postCount } tooltip={ this.tooltip() } /> }
+				{ ! isUndefined( postCount ) && <Count count={ postCount } tooltip={ this.tooltipText() } /> }
 				<span
 					className="taxonomy-manager__action-wrapper"
 					onClick={ this.togglePopoverMenu }
