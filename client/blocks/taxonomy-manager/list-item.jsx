@@ -91,7 +91,7 @@ class TaxonomyManagerListItem extends Component {
 						</span>
 					}
 				</span>
-				{ ! isUndefined( postCount ) && <Count count={ postCount } tooltip={ this.tooltipText() } /> }
+				{ ! isUndefined( postCount ) && <Count count={ postCount } tooltip={ this.tooltipText() } tooltipPosition="left" /> }
 				<span
 					className="taxonomy-manager__action-wrapper"
 					onClick={ this.togglePopoverMenu }

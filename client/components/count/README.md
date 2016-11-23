@@ -29,6 +29,9 @@ The number to be displayed. Make sure it's a number, not a string containing a n
 
 An optional tooltip to displayed when hovering over the count
 
+### `tooltipPosition`
+
+An optional position where the tooltip is displayed
 
 ## Custom Styling
 
