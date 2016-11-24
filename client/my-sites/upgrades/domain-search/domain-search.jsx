@@ -129,8 +129,7 @@ var DomainSearch = React.createClass( {
 						<UpgradesNavigation
 							path={ this.props.context.path }
 							cart={ this.props.cart }
-							selectedSite={ selectedSite }
-							sitePlans={ this.props.sitePlans } />
+							selectedSite={ selectedSite } />
 
 						<RegisterDomainStep
 							path={ this.props.context.path }

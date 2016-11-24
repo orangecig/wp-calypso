@@ -18,7 +18,6 @@ import SidebarNavigation from 'my-sites/sidebar-navigation';
 import TrackComponentView from 'lib/analytics/track-component-view';
 import UpgradesNavigation from 'my-sites/upgrades/navigation';
 import QueryPlans from 'components/data/query-plans';
-import QuerySitePlans from 'components/data/query-site-plans';
 
 const Plans = React.createClass( {
 	propTypes: {
@@ -26,8 +25,7 @@ const Plans = React.createClass( {
 		context: React.PropTypes.object.isRequired,
 		intervalType: React.PropTypes.string,
 		plans: React.PropTypes.array.isRequired,
-		selectedSite: React.PropTypes.object,
-		selectedSiteId: React.PropTypes.number
+		selectedSite: React.PropTypes.object
 	},
 
 	getDefaultProps() {
@@ -58,7 +56,7 @@ const Plans = React.createClass( {
 	},
 
 	render() {
-		const { selectedSite, selectedSiteId, translate } = this.props;
+		const { selectedSite, translate } = this.props;
 
 		if ( this.props.isPlaceholder ) {
 			return this.renderPlaceholder();
@@ -79,7 +77,6 @@ const Plans = React.createClass( {
 							selectedSite={ selectedSite } />
 
 						<QueryPlans />
-						<QuerySitePlans siteId={ selectedSiteId } />
 
 						<PlansFeaturesMain
 							site={ selectedSite }
@@ -101,8 +98,7 @@ export default connect(
 		return {
 			isPlaceholder,
 			plans: getPlans( state ),
-			selectedSite: getSelectedSite( state ),
-			selectedSiteId: selectedSiteId
+			selectedSite: getSelectedSite( state )
 		};
 	}
 )( localize( Plans ) );
