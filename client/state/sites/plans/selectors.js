@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import find from 'lodash/find';
-import get from 'lodash/get';
+import { find, get } from 'lodash';
 import debugFactory from 'debug';
 import moment from 'moment';
 
@@ -13,7 +12,7 @@ import { initialSiteState } from './reducer';
 import { getSite } from 'state/sites/selectors';
 import { createSitePlanObject } from './assembler';
 import createSelector from 'lib/create-selector';
-import { getPlan, getPlanPath } from 'lib/plans';
+import { getPlan, getPlanPath, planHasFeature } from 'lib/plans';
 import { PLAN_FREE, PLANS_LIST } from 'lib/plans/constants';
 
 /**
@@ -202,6 +201,14 @@ export function isCurrentUserCurrentPlanOwner( state, siteId ) {
 	const currentPlan = getCurrentPlan( state, siteId );
 
 	return get( currentPlan, 'userIsOwner', false );
+}
+
+export function getSitePlanSlug( state, siteId ) {
+	return get( getCurrentPlan( state, siteId ), 'productSlug', null );
+}
+
+export function hasFeature( state, siteId, feature ) {
+	return planHasFeature( getSitePlanSlug( state, siteId ), feature );
 }
 
 export function canUpgradeToPlan( state, siteId, planKey ) {
