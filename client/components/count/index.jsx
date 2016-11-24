@@ -11,16 +11,12 @@ export default React.createClass( {
 	mixins: [ PureRenderMixin ],
 
 	propTypes: {
-		count: React.PropTypes.number.isRequired
+		count: React.PropTypes.number.isRequired,
 	},
 
 	render() {
 		return (
-			<span>
-				<span className="count">
-					{ this.numberFormat( this.props.count ) }
-				</span>
-			</span>
+			<span className="count">{ this.numberFormat( this.props.count ) }</span>
 		);
 	}
 } );
