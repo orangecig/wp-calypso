@@ -1482,6 +1482,16 @@ Undocumented.prototype.activateTheme = function( themeId, siteId, fn ) {
 	}, fn );
 };
 
+Undocumented.prototype.uploadTheme = function( siteId, file, fn ) {
+	debug( '/sites/:site_id/themes/new' );
+	return this.wpcom.req.post( {
+		path: '/sites/' + siteId + '/themes/new',
+		formData: [
+			[ 'zip[]', file ]
+		]
+	}, fn );
+};
+
 Undocumented.prototype.emailForwards = function( domain, callback ) {
 	return this.wpcom.req.get( '/domains/' + domain + '/email', function( error, response ) {
 		if ( error ) {

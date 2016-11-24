@@ -33,6 +33,7 @@ import { createReducer, isValidStateWithSchema } from 'state/utils';
 import { queriesSchema, activeThemesSchema } from './schema';
 import currentTheme from './current-theme/reducer';
 import themesUI from './themes-ui/reducer';
+import uploadTheme from './upload-theme/reducer';
 
 /**
  * Returns the updated active theme state after an action has been
@@ -201,5 +202,6 @@ export default combineReducers( {
 	// queryRequests,
 	// themeRequests,
 	currentTheme,
-	themesUI
+	themesUI,
+	uploadTheme,
 } );

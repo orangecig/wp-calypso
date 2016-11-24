@@ -32,6 +32,10 @@ import {
 	THEME_ACTIVATE_REQUEST_SUCCESS,
 	THEME_ACTIVATE_REQUEST_FAILURE,
 	THEMES_RECEIVE_SERVER_ERROR,
+	THEME_UPLOAD_START,
+	THEME_UPLOAD_SUCCESS,
+	THEME_UPLOAD_FAILURE,
+	THEME_UPLOAD_CLEAR,
 } from 'state/action-types';
 import {
 	recordTracksEvent,
@@ -417,4 +421,37 @@ export function themeActivated( theme, siteId, source = 'unknown', purchased = f
 		dispatch( withAnalytics( trackThemeActivation, action ) );
 	};
 	return themeActivatedThunk; // it is named function just for testing purposes
+}
+
+export function uploadTheme( siteId, file ) {
+	return dispatch => {
+		dispatch( {
+			type: THEME_UPLOAD_START,
+			siteId,
+		} );
+		return wpcom.undocumented().uploadTheme( siteId, file )
+			.then( ( theme ) => {
+				dispatch( {
+					type: THEME_UPLOAD_SUCCESS,
+					siteId,
+					theme,
+				} );
+			} )
+			.catch( error => {
+				dispatch( {
+					type: THEME_UPLOAD_FAILURE,
+					siteId,
+					error
+				} );
+			} );
+	};
+}
+
+export function clearThemeUpload( siteId ) {
+	return dispatch => {
+		dispatch( {
+			type: THEME_UPLOAD_CLEAR,
+			siteId,
+		} );
+	};
 }
