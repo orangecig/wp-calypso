@@ -11,9 +11,6 @@ var connect = require( 'react-redux' ).connect,
  */
 var observe = require( 'lib/mixins/data-observe' ),
 	EmptyContent = require( 'components/empty-content' ),
-	fetchSitePlans = require( 'state/sites/plans/actions' ).fetchSitePlans,
-	FreeTrialNotice = require( './free-trial-notice' ),
-	getPlansBySite = require( 'state/sites/plans/selectors' ).getPlansBySite,
 	{ currentUserHasFlag } = require( 'state/current-user/selectors' ),
 	{ DOMAINS_WITH_PLANS_ONLY } = require( 'state/current-user/constants' ),
 	SidebarNavigation = require( 'my-sites/sidebar-navigation' ),
@@ -22,8 +19,7 @@ var observe = require( 'lib/mixins/data-observe' ),
 	Main = require( 'components/main' ),
 	upgradesActions = require( 'lib/upgrades/actions' ),
 	cartItems = require( 'lib/cart-values/cart-items' ),
-	analyticsMixin = require( 'lib/mixins/analytics' ),
-	shouldFetchSitePlans = require( 'lib/plans' ).shouldFetchSitePlans;
+	analyticsMixin = require( 'lib/mixins/analytics' );
 
 var DomainSearch = React.createClass( {
 	mixins: [ observe( 'productsList', 'sites' ), analyticsMixin( 'registerDomain' ) ],
@@ -46,7 +42,6 @@ var DomainSearch = React.createClass( {
 
 	componentDidMount: function() {
 		this.props.sites.on( 'change', this.checkSiteIsUpgradeable );
-		this.props.fetchSitePlans( this.props.sitePlans, this.props.sites.getSelectedSite() );
 
 		this.previousSelectedSite = this.props.sites.getSelectedSite();
 	},
@@ -54,7 +49,6 @@ var DomainSearch = React.createClass( {
 	componentWillReceiveProps: function() {
 		var selectedSite = this.props.sites.getSelectedSite();
 		if ( this.previousSelectedSite !== selectedSite ) {
-			this.props.fetchSitePlans( this.props.sitePlans, selectedSite );
 			this.previousSelectedSite = selectedSite;
 		}
 	},
@@ -123,8 +117,6 @@ var DomainSearch = React.createClass( {
 		} else {
 			content = (
 				<span>
-					<FreeTrialNotice cart={ this.props.cart } />
-
 					<div className="domain-search__content">
 						<UpgradesNavigation
 							path={ this.props.context.path }
@@ -157,19 +149,9 @@ var DomainSearch = React.createClass( {
 } );
 
 module.exports = connect(
-	function( state, props ) {
+	function( state ) {
 		return {
-			sitePlans: getPlansBySite( state, props.sites.getSelectedSite() ),
 			domainsWithPlansOnly: currentUserHasFlag( state, DOMAINS_WITH_PLANS_ONLY )
-		};
-	},
-	function( dispatch ) {
-		return {
-			fetchSitePlans( sitePlans, site ) {
-				if ( shouldFetchSitePlans( sitePlans, site ) ) {
-					dispatch( fetchSitePlans( site.ID ) );
-				}
-			}
 		};
 	}
 )( DomainSearch );
