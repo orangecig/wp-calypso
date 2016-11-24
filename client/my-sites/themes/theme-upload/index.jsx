@@ -56,7 +56,7 @@ class Upload extends React.Component {
 	}
 
 	successMessage() {
-		const { translate, theme } = this.props;
+		const { translate, uploadedTheme: theme } = this.props;
 		notices.success( translate( 'Successfully uploaded theme %(name)s', {
 			args: {
 				name: theme.name
@@ -66,6 +66,9 @@ class Upload extends React.Component {
 
 	failureMessage() {
 		const { translate, error } = this.props;
+
+		debug( 'Error', error );
+
 		const errorCauses = {
 			exists: translate( 'Upload problem: Theme already installed on site.' ),
 			'Too Large': translate( 'Upload problem: Zip file too large to upload.' ),
