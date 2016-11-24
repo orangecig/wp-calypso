@@ -36,6 +36,7 @@ import {
 	THEME_UPLOAD_SUCCESS,
 	THEME_UPLOAD_FAILURE,
 	THEME_UPLOAD_CLEAR,
+	THEME_UPLOAD_PROGRESS,
 } from 'state/action-types';
 import {
 	recordTracksEvent,
@@ -429,7 +430,14 @@ export function uploadTheme( siteId, file ) {
 			type: THEME_UPLOAD_START,
 			siteId,
 		} );
-		return wpcom.undocumented().uploadTheme( siteId, file )
+		return wpcom.undocumented().uploadTheme( siteId, file, ( event ) => {
+			dispatch( {
+				type: THEME_UPLOAD_PROGRESS,
+				siteId,
+				loaded: event.loaded,
+				total: event.total
+			} );
+		} )
 			.then( ( theme ) => {
 				dispatch( {
 					type: THEME_UPLOAD_SUCCESS,

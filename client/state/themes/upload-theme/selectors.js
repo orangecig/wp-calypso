@@ -22,3 +22,18 @@ export function getUploadError( state, siteId ) {
 	const siteState = state.themes.uploadTheme[ siteId ];
 	return siteState && siteState.error;
 }
+
+export function getUploadProgressTotal( state, siteId ) {
+	const siteState = state.themes.uploadTheme[ siteId ];
+	return siteState && siteState.total;
+}
+
+export function getUploadProgressLoaded( state, siteId ) {
+	const siteState = state.themes.uploadTheme[ siteId ];
+	return siteState && siteState.loaded;
+}
+
+export function isInstallInProgress( state, siteId ) {
+	const siteState = state.themes.uploadTheme[ siteId ];
+	return siteState && ( siteState.loaded === siteState.total );
+}

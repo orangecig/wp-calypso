@@ -6,6 +6,7 @@ import {
 	THEME_UPLOAD_SUCCESS,
 	THEME_UPLOAD_FAILURE,
 	THEME_UPLOAD_CLEAR,
+	THEME_UPLOAD_PROGRESS,
 } from 'state/action-types';
 
 export default function( state = {}, action ) {
@@ -28,6 +29,11 @@ export default function( state = {}, action ) {
 
 		case THEME_UPLOAD_CLEAR:
 			state[ siteId ] = {};
+			return state;
+
+		case THEME_UPLOAD_PROGRESS:
+			state[ siteId ].loaded = action.loaded;
+			state[ siteId ].total = action.total;
 			return state;
 	}
 	return state;

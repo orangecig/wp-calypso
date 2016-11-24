@@ -28,6 +28,9 @@ import {
 	hasUploadFailed,
 	getUploadedTheme,
 	getUploadError,
+	getUploadProgressTotal,
+	getUploadProgressLoaded,
+	isInstallInProgress,
 } from 'state/themes/upload-theme/selectors';
 
 const debug = debugFactory( 'calypso:themes:theme-upload' );
@@ -133,11 +136,27 @@ class Upload extends React.Component {
 	}
 
 	renderProgressBar() {
-		const { translate } = this.props;
+		const {
+			translate,
+			progressTotal,
+			progressLoaded,
+			installing,
+		} = this.props;
+
+		const uploadingMessage = translate( 'Uploading your theme…' );
+		const installingMessage = translate( 'Installing your theme on site…' );
+
 		return (
 			<div>
-				<span className="theme-upload__title">{ translate( 'Uploading your theme…' ) }</span>
-				<ProgressBar value={ 100 } title={ translate( 'Uploading progress' ) } isPulsing />
+				<span className="theme-upload__title">
+					{ installing ? installingMessage : uploadingMessage }
+				</span>
+				<ProgressBar
+					value={ progressLoaded || 0 }
+					total={ progressTotal || 100 }
+					title={ translate( 'Uploading progress' ) }
+					isPulsing={ installing }
+				/>
 			</div>
 		);
 	}
@@ -182,6 +201,9 @@ export default connect(
 			failed: hasUploadFailed( state, siteId ),
 			uploadedTheme: getUploadedTheme( state, siteId ),
 			error: getUploadError( state, siteId ),
+			progressTotal: getUploadProgressTotal( state, siteId ),
+			progressLoaded: getUploadProgressLoaded( state, siteId ),
+			installing: isInstallInProgress( state, siteId ),
 		};
 	},
 	( dispatch ) => {

@@ -1482,14 +1482,22 @@ Undocumented.prototype.activateTheme = function( themeId, siteId, fn ) {
 	}, fn );
 };
 
-Undocumented.prototype.uploadTheme = function( siteId, file, fn ) {
+Undocumented.prototype.uploadTheme = function( siteId, file, onProgress ) {
 	debug( '/sites/:site_id/themes/new' );
-	return this.wpcom.req.post( {
-		path: '/sites/' + siteId + '/themes/new',
-		formData: [
-			[ 'zip[]', file ]
-		]
-	}, fn );
+	return new Promise( ( resolve ) => {
+		const resolver = ( error, data ) => {
+			error ? reject( error ) : resolve( data );
+		};
+
+		const req = this.wpcom.req.post( {
+			path: '/sites/' + siteId + '/themes/new',
+			formData: [
+				[ 'zip[]', file ]
+			]
+		}, resolver );
+
+		req.upload.onprogress = onProgress;
+	} );
 };
 
 Undocumented.prototype.emailForwards = function( domain, callback ) {
