@@ -4,7 +4,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import { localize } from 'i18n-calypso';
-import { isUndefined } from 'lodash';
+import { isUndefined, noop } from 'lodash';
 
 /**
  * Internal dependencies
@@ -13,6 +13,7 @@ import PopoverMenu from 'components/popover/menu';
 import PopoverMenuItem from 'components/popover/menu-item';
 import Gridicon from 'components/gridicon';
 import Count from 'components/count';
+import Tooltip from 'components/tooltip';
 
 class TaxonomyManagerListItem extends Component {
 	static propTypes = {
@@ -32,7 +33,8 @@ class TaxonomyManagerListItem extends Component {
 	constructor( props ) {
 		super( props );
 		this.state = {
-			popoverMenuOpen: false
+			popoverMenuOpen: false,
+			showTooltip: false
 		};
 	}
 
@@ -72,6 +74,14 @@ class TaxonomyManagerListItem extends Component {
 		);
 	};
 
+	showTooltip= () => {
+		this.setState( { showTooltip: true } );
+	};
+
+	hideTooltip= () => {
+		this.setState( { showTooltip: false } );
+	};
+
 	render() {
 		const { isDefault, onDelete, postCount, name, translate } = this.props;
 		const className = classNames( 'taxonomy-manager__item', {
@@ -91,7 +101,21 @@ class TaxonomyManagerListItem extends Component {
 						</span>
 					}
 				</span>
-				{ ! isUndefined( postCount ) && <Count count={ postCount } tooltip={ this.tooltipText() } tooltipPosition="left" /> }
+				<span
+					ref="count"
+					onMouseEnter={ this.showTooltip }
+					onMouseLeave={ this.hideTooltip }>
+					{ ! isUndefined( postCount ) && <Count count={ postCount } tooltip={ this.tooltipText() } tooltipPosition="left" /> }
+					<Tooltip
+						context={ this.refs && this.refs.count }
+						isVisible={ this.state.showTooltip }
+						position="left"
+						onClose={ noop }
+					>
+						{ this.tooltipText() }
+					</Tooltip>
+				</span>
+
 				<span
 					className="taxonomy-manager__action-wrapper"
 					onClick={ this.togglePopoverMenu }

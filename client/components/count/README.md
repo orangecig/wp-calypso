@@ -25,14 +25,6 @@ render: function() {
 
 The number to be displayed. Make sure it's a number, not a string containing a number.
 
-### `tooltip`
-
-An optional tooltip to displayed when hovering over the count
-
-### `tooltipPosition`
-
-An optional position where the tooltip is displayed
-
 ## Custom Styling
 
 In some cases, it may be necessary to increase the font size or remove the border. In your component's style file, specify rules for the `.count` within your component's selector. For an example, see the `select-dropdown` component's style file.
