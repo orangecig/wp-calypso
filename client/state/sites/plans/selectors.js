@@ -13,6 +13,8 @@ import { initialSiteState } from './reducer';
 import { getSite } from 'state/sites/selectors';
 import { createSitePlanObject } from './assembler';
 import createSelector from 'lib/create-selector';
+import { getPlan, getPlanPath } from 'lib/plans';
+import { PLAN_FREE, PLANS_LIST } from 'lib/plans/constants';
 
 /**
  * Module dependencies
@@ -200,4 +202,17 @@ export function isCurrentUserCurrentPlanOwner( state, siteId ) {
 	const currentPlan = getCurrentPlan( state, siteId );
 
 	return get( currentPlan, 'userIsOwner', false );
+}
+
+export function canUpgradeToPlan( state, siteId, planKey ) {
+	const plan = getCurrentPlan( state, siteId );
+	const planSlug = get( plan, 'expired', false ) ? PLAN_FREE : get( plan, 'productSlug', PLAN_FREE );
+	return get( getPlan( planKey ), 'availableFor', () => false )( planSlug );
+}
+
+export function getUpgradePlanSlugFromPath( state, siteId, path ) {
+	return find( Object.keys( PLANS_LIST ), planKey => (
+		( planKey === path || getPlanPath( planKey ) === path ) &&
+		canUpgradeToPlan( state, siteId, planKey )
+	) );
 }
