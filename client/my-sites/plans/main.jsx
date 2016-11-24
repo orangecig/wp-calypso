@@ -87,12 +87,8 @@ const Plans = React.createClass( {
 } );
 
 export default connect(
-	( state ) => {
-		const selectedSiteId = getSelectedSiteId( state );
-		const isPlaceholder = ! selectedSiteId;
-		return {
-			isPlaceholder,
-			selectedSite: getSelectedSite( state )
-		};
-	}
+	( state ) => ( {
+		isPlaceholder: ! getSelectedSiteId( state ),
+		selectedSite: getSelectedSite( state )
+	} )
 )( localize( Plans ) );
