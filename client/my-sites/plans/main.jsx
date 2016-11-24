@@ -9,7 +9,6 @@ import React from 'react';
  * Internal dependencies
  */
 import DocumentHead from 'components/data/document-head';
-import { getPlans } from 'state/plans/selectors';
 import { getSelectedSite, getSelectedSiteId } from 'state/ui/selectors';
 import Main from 'components/main';
 import PageViewTracker from 'lib/analytics/page-view-tracker';
@@ -17,14 +16,12 @@ import PlansFeaturesMain from 'my-sites/plans-features-main';
 import SidebarNavigation from 'my-sites/sidebar-navigation';
 import TrackComponentView from 'lib/analytics/track-component-view';
 import UpgradesNavigation from 'my-sites/upgrades/navigation';
-import QueryPlans from 'components/data/query-plans';
 
 const Plans = React.createClass( {
 	propTypes: {
 		cart: React.PropTypes.object.isRequired,
 		context: React.PropTypes.object.isRequired,
 		intervalType: React.PropTypes.string,
-		plans: React.PropTypes.array.isRequired,
 		selectedSite: React.PropTypes.object
 	},
 
@@ -76,8 +73,6 @@ const Plans = React.createClass( {
 							cart={ this.props.cart }
 							selectedSite={ selectedSite } />
 
-						<QueryPlans />
-
 						<PlansFeaturesMain
 							site={ selectedSite }
 							intervalType={ this.props.intervalType }
@@ -97,7 +92,6 @@ export default connect(
 		const isPlaceholder = ! selectedSiteId;
 		return {
 			isPlaceholder,
-			plans: getPlans( state ),
 			selectedSite: getSelectedSite( state )
 		};
 	}
