@@ -197,9 +197,11 @@ export default combineReducers( {
 	themeDetails,
 	themesList,
 	// New reducers:
-	// queries,
+	queries,
 	// queryRequests,
-	// themeRequests,
+	themeRequests,
+	activeThemes,
+	activeThemeRequests,
 	currentTheme,
 	themesUI
 } );
