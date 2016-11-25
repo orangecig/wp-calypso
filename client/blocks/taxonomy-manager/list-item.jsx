@@ -62,8 +62,8 @@ class TaxonomyManagerListItem extends Component {
 	tooltipText= () => {
 		const { postCount, name, translate } = this.props;
 		return translate(
-			'%(postCount)s \'%(name)s\' post',
-			'%(postCount)s \'%(name)s\' posts',
+			'%(postCount)d \'%(name)s\' post',
+			'%(postCount)d \'%(name)s\' posts',
 			{
 				count: postCount,
 				args: {
