@@ -31,7 +31,7 @@ import { isUserPaid } from 'state/purchases/selectors';
 import { getForumUrl } from 'my-sites/themes/helpers';
 import { isPremiumTheme as isPremium } from 'state/themes/utils';
 import ThanksModal from 'my-sites/themes/thanks-modal';
-import QueryCurrentTheme from 'components/data/query-current-theme';
+import QueryActiveTheme from 'components/data/query-active-theme';
 import QueryUserPurchases from 'components/data/query-user-purchases';
 import ThemesSiteSelectorModal from 'my-sites/themes/themes-site-selector-modal';
 import { connectOptions } from 'my-sites/themes/theme-options';
@@ -437,7 +437,7 @@ const ThemeSheet = React.createClass( {
 					link={ links } />
 				<PageViewTracker path={ analyticsPath } title={ analyticsPageTitle } />
 				{ this.renderBar() }
-				{ siteID && <QueryCurrentTheme siteId={ siteID } /> }
+				{ siteID && <QueryActiveTheme siteId={ siteID } /> }
 				<ThanksModal
 					site={ this.props.selectedSite }
 					source={ 'details' } />
