@@ -16,7 +16,7 @@ import StickyPanel from 'components/sticky-panel';
 import analytics from 'lib/analytics';
 import buildUrl from 'lib/mixins/url-search/build-url';
 import { getSiteSlug } from 'state/sites/selectors';
-import { isActiveTheme } from 'state/themes/current-theme/selectors';
+import { isThemeActive } from 'state/themes/selectors';
 import { isThemePurchased } from 'state/themes/selectors';
 import {
 	getFilter,
@@ -47,7 +47,7 @@ const ThemesSelection = React.createClass( {
 		vertical: React.PropTypes.string,
 		// connected props
 		siteSlug: React.PropTypes.string,
-		isActiveTheme: React.PropTypes.func,
+		isThemeActive: React.PropTypes.func,
 		isThemePurchased: React.PropTypes.func,
 	},
 
@@ -113,7 +113,7 @@ const ThemesSelection = React.createClass( {
 
 	onScreenshotClick( theme, resultsRank ) {
 		trackClick( 'theme', 'screenshot' );
-		if ( ! this.props.isActiveTheme( theme.id ) ) {
+		if ( ! this.props.isThemeActive( theme.id ) ) {
 			this.recordSearchResultsClick( theme, resultsRank );
 		}
 		this.props.onScreenshotClick && this.props.onScreenshotClick( theme );
@@ -150,7 +150,7 @@ const ThemesSelection = React.createClass( {
 						onScreenshotClick={ this.onScreenshotClick }
 						getScreenshotUrl={ this.props.getScreenshotUrl }
 						getActionLabel={ this.props.getActionLabel }
-						isActive={ this.props.isActiveTheme }
+						isActive={ this.props.isThemeActive }
 						isPurchased={ this.props.isThemePurchased } />
 				</ThemesData>
 			</div>
@@ -162,7 +162,7 @@ const ThemesSelection = React.createClass( {
 export default connect(
 	( state, { siteId } ) => ( {
 		siteSlug: getSiteSlug( state, siteId ),
-		isActiveTheme: themeId => isActiveTheme( state, themeId, siteId ),
+		isThemeActive: themeId => isThemeActive( state, themeId, siteId ),
 		// Note: This component assumes that purchase data is already present in the state tree
 		// (used by the isThemePurchased selector). At the time of implementation there's no caching
 		// in <QuerySitePurchases /> and a parent component is already rendering it. So to avoid

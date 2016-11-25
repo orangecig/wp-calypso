@@ -35,7 +35,7 @@ import QueryActiveTheme from 'components/data/query-active-theme';
 import QueryUserPurchases from 'components/data/query-user-purchases';
 import ThemesSiteSelectorModal from 'my-sites/themes/themes-site-selector-modal';
 import { connectOptions } from 'my-sites/themes/theme-options';
-import { isActiveTheme } from 'state/themes/current-theme/selectors';
+import { isThemeActive } from 'state/themes/selectors';
 import { getBackPath } from 'state/themes/themes-ui/selectors';
 import EmptyContentComponent from 'components/empty-content';
 import ThemePreview from 'my-sites/themes/theme-preview';
@@ -560,7 +560,7 @@ export default connect(
 			currentUserId,
 			isCurrentUserPaid,
 			isLoggedIn: !! currentUserId,
-			isActive: selectedSite && isActiveTheme( state, id, selectedSite.ID )
+			isActive: selectedSite && isThemeActive( state, id, selectedSite.ID )
 		};
 	}
 )( ThemeSheetWithOptions );
