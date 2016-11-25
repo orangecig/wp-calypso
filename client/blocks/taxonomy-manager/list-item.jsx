@@ -101,21 +101,20 @@ class TaxonomyManagerListItem extends Component {
 						</span>
 					}
 				</span>
-				<span
+				{ ! isUndefined( postCount ) && <Count
 					ref="count"
+					count={ postCount }
 					onMouseEnter={ this.showTooltip }
-					onMouseLeave={ this.hideTooltip }>
-					{ ! isUndefined( postCount ) && <Count count={ postCount } tooltip={ this.tooltipText() } tooltipPosition="left" /> }
-					<Tooltip
-						context={ this.refs && this.refs.count }
-						isVisible={ this.state.showTooltip }
-						position="left"
-						onClose={ noop }
-					>
-						{ this.tooltipText() }
-					</Tooltip>
-				</span>
-
+					onMouseLeave={ this.hideTooltip }
+				/> }
+				<Tooltip
+					context={ this.refs && this.refs.count }
+					isVisible={ this.state.showTooltip }
+					position="left"
+					onClose={ noop }
+				>
+					{ this.tooltipText() }
+				</Tooltip>
 				<span
 					className="taxonomy-manager__action-wrapper"
 					onClick={ this.togglePopoverMenu }
