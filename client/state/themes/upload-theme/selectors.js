@@ -1,39 +1,37 @@
+/**
+ * External dependencies
+ */
+import { get } from 'lodash';
+
 export function isUploadInProgress( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && siteState.inProgress;
+	return get( state.themes.uploadTheme.inProgress, siteId );
 }
 
 export function isUploadComplete( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && !! siteState.theme;
+	return !! get( state.themes.uploadTheme.uploadedTheme, siteId );
 }
 
 export function hasUploadFailed( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && !! siteState.error;
+	return !! get( state.themes.uploadTheme.uploadError, siteId );
 }
 
 export function getUploadedTheme( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && siteState.theme;
+	return get( state.themes.uploadTheme.uploadedTheme, siteId );
 }
 
 export function getUploadError( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && siteState.error;
+	return get( state.themes.uploadTheme.uploadError, siteId );
 }
 
 export function getUploadProgressTotal( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && siteState.total;
+	return get( state.themes.uploadTheme.progressTotal, siteId );
 }
 
 export function getUploadProgressLoaded( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && siteState.loaded;
+	return get( state.themes.uploadTheme.progressLoaded, siteId );
 }
 
 export function isInstallInProgress( state, siteId ) {
-	const siteState = state.themes.uploadTheme[ siteId ];
-	return siteState && ( siteState.loaded === siteState.total );
+	return getUploadProgressTotal( state, siteId ) ===
+		getUploadProgressLoaded( state, siteId );
 }

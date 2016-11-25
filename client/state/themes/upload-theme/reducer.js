@@ -1,6 +1,12 @@
 /**
+ * External dependencies
+ */
+import { combineReducers } from 'redux';
+
+/**
  * Internal dependencies
  */
+import { createReducer } from 'state/utils';
 import {
 	THEME_UPLOAD_START,
 	THEME_UPLOAD_SUCCESS,
@@ -9,32 +15,62 @@ import {
 	THEME_UPLOAD_PROGRESS,
 } from 'state/action-types';
 
-export default function( state = {}, action ) {
-	const { siteId } = action;
-	switch ( action.type ) {
-		case THEME_UPLOAD_START:
-			state[ siteId ] = {};
-			state[ siteId ].inProgress = true;
-			return state;
+const clearState = function( state, { siteId } ) {
+	const newState = Object.assign( {}, state );
+	delete newState[ siteId ];
+	return newState;
+};
 
-		case THEME_UPLOAD_SUCCESS:
-			state[ siteId ] = {};
-			state[ siteId ].theme = action.theme;
-			return state;
+const uploadedTheme = createReducer( {}, {
+	[ THEME_UPLOAD_SUCCESS ]: ( state, { siteId, theme } ) => ( {
+		...state,
+		[ siteId ]: theme
+	} ),
+	[ THEME_UPLOAD_CLEAR ]: clearState,
+	[ THEME_UPLOAD_START ]: clearState,
+} );
 
-		case THEME_UPLOAD_FAILURE:
-			state[ siteId ] = {};
-			state[ siteId ].error = action.error;
-			return state;
+const uploadError = createReducer( {}, {
+	[ THEME_UPLOAD_FAILURE ]: ( state, { siteId, error } ) => ( {
+		...state,
+		[ siteId ]: error
+	} ),
+	[ THEME_UPLOAD_CLEAR ]: clearState,
+	[ THEME_UPLOAD_START ]: clearState,
+} );
 
-		case THEME_UPLOAD_CLEAR:
-			state[ siteId ] = {};
-			return state;
+const progressLoaded = createReducer( {}, {
+	[ THEME_UPLOAD_PROGRESS ]: ( state, { siteId, loaded } ) => ( {
+		...state,
+		[ siteId ]: loaded
+	} ),
+	[ THEME_UPLOAD_CLEAR ]: clearState,
+	[ THEME_UPLOAD_START ]: clearState,
+} );
 
-		case THEME_UPLOAD_PROGRESS:
-			state[ siteId ].loaded = action.loaded;
-			state[ siteId ].total = action.total;
-			return state;
-	}
-	return state;
-}
+const progressTotal = createReducer( {}, {
+	[ THEME_UPLOAD_PROGRESS ]: ( state, { siteId, total } ) => ( {
+		...state,
+		[ siteId ]: total
+	} ),
+	[ THEME_UPLOAD_CLEAR ]: clearState,
+	[ THEME_UPLOAD_START ]: clearState,
+} );
+
+const inProgress = createReducer( {}, {
+	[ THEME_UPLOAD_START ]: ( state, { siteId } ) => ( {
+		...state,
+		[ siteId ]: true
+	} ),
+	[ THEME_UPLOAD_CLEAR ]: clearState,
+	[ THEME_UPLOAD_SUCCESS ]: clearState,
+	[ THEME_UPLOAD_FAILURE ]: clearState,
+} );
+
+export default combineReducers( {
+	uploadedTheme,
+	uploadError,
+	progressLoaded,
+	progressTotal,
+	inProgress,
+} );

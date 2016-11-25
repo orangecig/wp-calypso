@@ -1484,9 +1484,9 @@ Undocumented.prototype.activateTheme = function( themeId, siteId, fn ) {
 
 Undocumented.prototype.uploadTheme = function( siteId, file, onProgress ) {
 	debug( '/sites/:site_id/themes/new' );
-	return new Promise( ( resolve ) => {
+	return new Promise( ( resolve, rejectPromise ) => {
 		const resolver = ( error, data ) => {
-			error ? reject( error ) : resolve( data );
+			error ? rejectPromise( error ) : resolve( data );
 		};
 
 		const req = this.wpcom.req.post( {
