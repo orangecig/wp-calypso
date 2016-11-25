@@ -52,14 +52,14 @@ class TaxonomyManagerListItem extends Component {
 		this.props.onClick();
 	};
 
-	deleteItem= () => {
+	deleteItem = () => {
 		this.setState( {
 			popoverMenuOpen: false
 		} );
 		this.props.onDelete();
 	};
 
-	tooltipText= () => {
+	tooltipText = () => {
 		const { postCount, name, translate } = this.props;
 		return translate(
 			'%(postCount)d \'%(name)s\' post',
@@ -74,11 +74,11 @@ class TaxonomyManagerListItem extends Component {
 		);
 	};
 
-	showTooltip= () => {
+	showTooltip = () => {
 		this.setState( { showTooltip: true } );
 	};
 
-	hideTooltip= () => {
+	hideTooltip = () => {
 		this.setState( { showTooltip: false } );
 	};
 
