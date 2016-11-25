@@ -3,9 +3,10 @@
  */
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { initial, flatMap, trim, sampleSize } from 'lodash';
+import { throttle, initial, flatMap, trim, sampleSize } from 'lodash';
 import closest from 'component-closest';
 import { localize } from 'i18n-calypso';
+import classnames from 'classnames';
 
 /**
  * Internal Dependencies
@@ -195,6 +196,32 @@ const SearchStream = React.createClass( {
 		return null;
 	},
 
+	isElementVisible( elm ) {
+		const rect = elm.getBoundingClientRect();
+		const viewHeight = Math.max( document.documentElement.clientHeight, window.innerHeight );
+		return ! ( rect.bottom < 0 || rect.top - viewHeight >= 0 );
+	},
+
+	componentWillMount() {
+		this.onScrollListener = window.addEventListener( 'scroll', throttle( this.handleScroll, 15 ) );
+	},
+
+	handleScroll() {
+		if ( this.searchRef ) {
+			this.setState( {
+				isSearchVisible: this.isElementVisible( this.searchRef ),
+			} )
+		}
+	},
+
+	componentWillUnmount() {
+		window.removeEventListener( this.scrollCheckInterval );
+	},
+
+	componentDidMount() {
+		this.handleScroll();
+	},
+
 	render() {
 		const blankContent = this.props.showBlankContent ? <BlankContent suggestions={ this.state.suggestions } /> : null;
 		const emptyContent = this.props.query
@@ -211,6 +238,10 @@ const SearchStream = React.createClass( {
 		const sugList = initial( flatMap( this.state.suggestions, query =>
 			[ <Suggestion suggestion={ query } />, ', ' ] ) );
 
+		const searchAreaClasses = classnames( 'search__stream-fixable-scroll-area', {
+			'is-fixed': ! this.state.isSearchVisible,
+		} )
+
 		return (
 			<Stream { ...this.props } store={ store }
 				listName={ this.props.translate( 'Search' ) }
@@ -222,20 +253,23 @@ const SearchStream = React.createClass( {
 				className="search-stream" >
 				{ this.props.showBack && <HeaderBack /> }
 				<DocumentHead title={ this.props.translate( '%s ‹ Reader', { args: this.state.title || this.props.translate( 'Search' ) } ) } />
-				<CompactCard className="search-stream__input-card">
-					<SearchInput
-						initialValue={ this.props.query }
-						onSearch={ this.updateQuery }
-						autoFocus={ ! this.props.query }
-						delaySearch={ true }
-						delayTimeout={ 500 }
-						placeholder={ searchPlaceholderText } />
-				</CompactCard>
-				{ ! this.props.query && (
-					<p className="search-stream__blank-suggestions">
-						{ this.props.translate( 'Suggestions: {{suggestions /}}.', { components: { suggestions: sugList } } ) }
-					</p>
-				) }
+				<div ref={ ( c ) => this.searchRef = c }> </div>
+				<div className={ searchAreaClasses }>
+					<CompactCard className="search-stream__input-card">
+						<SearchInput
+							initialValue={ this.props.query }
+							onSearch={ this.updateQuery }
+							autoFocus={ ! this.props.query }
+							delaySearch={ true }
+							delayTimeout={ 500 }
+							placeholder={ searchPlaceholderText } />
+					</CompactCard>
+					{ ! this.props.query && (
+						<p className="search-stream__blank-suggestions">
+							{ this.props.translate( 'Suggestions: {{suggestions /}}.', { components: { suggestions: sugList } } ) }
+						</p>
+					) }
+				</div>
 			</Stream>
 		);
 	}
