@@ -21,47 +21,43 @@ const clearState = function( state, { siteId } ) {
 	return newState;
 };
 
+// Returns a func that sets state to be the specified action property,
+// or true if no property supplied
+const setState = function( actionProp ) {
+	return ( state, action ) => {
+		const { siteId } = action;
+		const newState = Object.assign( {}, state );
+		newState[ siteId ] = actionProp ? action[ actionProp ] : true;
+		return newState;
+	};
+};
+
 const uploadedTheme = createReducer( {}, {
-	[ THEME_UPLOAD_SUCCESS ]: ( state, { siteId, theme } ) => ( {
-		...state,
-		[ siteId ]: theme
-	} ),
+	[ THEME_UPLOAD_SUCCESS ]: setState( 'theme' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
 const uploadError = createReducer( {}, {
-	[ THEME_UPLOAD_FAILURE ]: ( state, { siteId, error } ) => ( {
-		...state,
-		[ siteId ]: error
-	} ),
+	[ THEME_UPLOAD_FAILURE ]: setState( 'error' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
 const progressLoaded = createReducer( {}, {
-	[ THEME_UPLOAD_PROGRESS ]: ( state, { siteId, loaded } ) => ( {
-		...state,
-		[ siteId ]: loaded
-	} ),
+	[ THEME_UPLOAD_PROGRESS ]: setState( 'loaded' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
 const progressTotal = createReducer( {}, {
-	[ THEME_UPLOAD_PROGRESS ]: ( state, { siteId, total } ) => ( {
-		...state,
-		[ siteId ]: total
-	} ),
+	[ THEME_UPLOAD_PROGRESS ]: setState( 'total' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
 const inProgress = createReducer( {}, {
-	[ THEME_UPLOAD_START ]: ( state, { siteId } ) => ( {
-		...state,
-		[ siteId ]: true
-	} ),
+	[ THEME_UPLOAD_START ]: setState(),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_SUCCESS ]: clearState,
 	[ THEME_UPLOAD_FAILURE ]: clearState,
