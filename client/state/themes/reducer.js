@@ -20,6 +20,7 @@ import {
 	THEMES_REQUEST_SUCCESS,
 	THEMES_REQUEST_FAILURE,
 	THEME_ACTIVATE_REQUEST_SUCCESS,
+	THEME_CLEAR_ACTIVATED,
 	ACTIVE_THEME_REQUEST,
 	ACTIVE_THEME_REQUEST_SUCCESS,
 	ACTIVE_THEME_REQUEST_FAILURE,
@@ -53,6 +54,26 @@ export const activeThemes = createReducer( {}, {
 		[ siteId ]: themeId
 	} ) },
 	activeThemesSchema
+ );
+
+ /**
+  * Returns the updated completed theme activation requess state after an action has been
+  * dispatched. The state reflects a mapping of site ID to boolean, reflecting whether
+  * activation request has finished or has been cleared.
+  *
+  * @param  {Object} state  Current state
+  * @param  {Object} action Action payload
+  * @return {Object}        Updated state
+  */
+export const completedActivationRequests = createReducer( {}, {
+	[ THEME_ACTIVATE_REQUEST_SUCCESS ]: ( state, { siteId } ) => ( {
+		...state,
+		[ siteId ]: true,
+	} ),
+	[ THEME_CLEAR_ACTIVATED ]: ( state, { siteId } ) => ( {
+		...state,
+		[ siteId ]: false,
+	} ) }
  );
 
 /**
