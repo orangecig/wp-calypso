@@ -32,31 +32,31 @@ const setState = function( actionProp ) {
 	};
 };
 
-const uploadedTheme = createReducer( {}, {
+export const uploadedTheme = createReducer( {}, {
 	[ THEME_UPLOAD_SUCCESS ]: setState( 'theme' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
-const uploadError = createReducer( {}, {
+export const uploadError = createReducer( {}, {
 	[ THEME_UPLOAD_FAILURE ]: setState( 'error' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
-const progressLoaded = createReducer( {}, {
+export const progressLoaded = createReducer( {}, {
 	[ THEME_UPLOAD_PROGRESS ]: setState( 'loaded' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
-const progressTotal = createReducer( {}, {
+export const progressTotal = createReducer( {}, {
 	[ THEME_UPLOAD_PROGRESS ]: setState( 'total' ),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_START ]: clearState,
 } );
 
-const inProgress = createReducer( {}, {
+export const inProgress = createReducer( {}, {
 	[ THEME_UPLOAD_START ]: setState(),
 	[ THEME_UPLOAD_CLEAR ]: clearState,
 	[ THEME_UPLOAD_SUCCESS ]: clearState,
